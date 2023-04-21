@@ -2,7 +2,7 @@ export const dateKey = (year: number, month: number, day: number) => {
   return `${year}-${month}-${day}`;
 };
 
-export const createDateKey = (date: Date) => {
+export const createDateKey = (date = new Date()) => {
   return dateKey(date.getFullYear(), date.getMonth(), date.getDate());
 };
 
