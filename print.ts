@@ -1,12 +1,10 @@
-import { Table, Cell } from "https://deno.land/x/cliffy@v0.25.7/table/mod.ts";
 import { colors } from "https://deno.land/x/cliffy@v0.25.7/ansi/colors.ts";
+import { Cell, Table } from "https://deno.land/x/cliffy@v0.25.7/table/mod.ts";
 
-type Data = Array<{
-  date: string;
-  hours: number;
-}>;
+import { formatDateForPrint } from "./dateKey.ts";
+import { SubmitData } from "./types.ts";
 
-export const printSubmit = (data: Data) => {
+export const printSubmit = (data: SubmitData) => {
   const table = new Table();
   table.border(true);
   table.padding(1);
@@ -15,7 +13,7 @@ export const printSubmit = (data: Data) => {
 
   data.forEach(({ date, hours }) => {
     let parsedHours = String(hours);
-    let parsedDate = date;
+    let parsedDate = formatDateForPrint(date);
 
     // Overhours
     if (hours > 8) {

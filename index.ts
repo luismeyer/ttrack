@@ -1,10 +1,11 @@
 import { Command } from "https://deno.land/x/cliffy@v0.25.7/command/mod.ts";
 
-import { createDateKey, formatDateKey } from "./dateKey.ts";
+import { createDateKey, parseDateKey } from "./dateKey.ts";
 import { initStore } from "./initStore.ts";
-import { periodDates } from "./periodDates.ts";
+import { dateKeysInPeriod, endOfPeriod } from "./period.ts";
 import { printGreen, printRed, printSubmit } from "./print.ts";
 import { parseDate } from "./parseDate.ts";
+import { syncSubmit } from "./syncSubmit.ts";
 
 const DEFAULT_HOURS = 8;
 
@@ -44,15 +45,23 @@ const otCommand = new Command()
 
 const submitCommand = new Command()
   .description("Print times for this period.")
-  .action(() => {
-    const keys = periodDates(new Date());
+  .option("-d, --date <date:string>", "Date to find submit period.")
+  .action(async ({ date }) => {
+    const inputDate = parseDate(date) ?? new Date();
+
+    const keys = dateKeysInPeriod(inputDate);
+    const endDate = endOfPeriod(inputDate);
 
     const output = keys.map((key) => ({
-      date: formatDateKey(key),
+      date: parseDateKey(key),
       hours: store[key] ?? DEFAULT_HOURS,
     }));
 
-    printSubmit(output);
+    const success = await syncSubmit(output, endDate);
+
+    if (success) {
+      printSubmit(output);
+    }
   });
 
 await new Command()
