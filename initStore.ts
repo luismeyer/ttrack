@@ -1,9 +1,7 @@
-import * as path from "https://deno.land/std@0.102.0/path/mod.ts";
 import { existsSync } from "https://deno.land/std@0.184.0/fs/mod.ts";
+import { relativePath } from "./relativePath.ts";
 
-export const mainModuleDir = path.dirname(path.fromFileUrl(Deno.mainModule));
-
-const FILE_PATH = path.resolve(mainModuleDir, "./store.json");
+const FILE_PATH = relativePath("./store.json");
 
 type Store = Record<string, number | undefined>;
 

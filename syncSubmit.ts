@@ -2,8 +2,9 @@ import { loadSync } from "https://deno.land/std@0.184.0/dotenv/mod.ts";
 import { colors } from "https://deno.land/x/cliffy@v0.25.7/ansi/colors.ts";
 
 import { SubmitData } from "./types.ts";
+import { relativePath } from "./relativePath.ts";
 
-const configData = loadSync();
+const configData = loadSync({ envPath: relativePath("./.env") });
 
 const { TOKEN, PROJECT_NUMBER, ENTERPRISE_ID, SAVE_URL, SUBMIT_URL } =
   configData;
