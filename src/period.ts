@@ -1,9 +1,4 @@
-import { dateKey, parseDateKey } from "./dateKey.ts";
-
-const isWeekend = (date: Date): boolean => {
-  const day = date.getDay();
-  return day === 0 || day === 6;
-};
+import { dateKey } from "./dateKey.ts";
 
 const endOfMonth = (year: number, month: number): number => {
   // 0 day of next month is the last day of this month
@@ -20,11 +15,6 @@ const createPeriodDates = (
 
   for (let i = start; i <= end; i++) {
     const newDateKey = dateKey(year, month, i);
-    const date = parseDateKey(newDateKey);
-
-    if (date && isWeekend(date)) {
-      continue;
-    }
 
     result = [...result, newDateKey];
   }

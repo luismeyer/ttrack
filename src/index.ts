@@ -1,15 +1,14 @@
 import { Command } from "https://deno.land/x/cliffy@v0.25.7/command/mod.ts";
 
-import { createDateKey, parseDateKey } from "./dateKey.ts";
-import { initStore } from "./initStore.ts";
-import { dateKeysInPeriod, endOfPeriod } from "./period.ts";
-import { printGreen, printRed, printSubmit } from "./print.ts";
+import { createSubmit } from "./createSubmit.ts";
+import { createDateKey } from "./dateKey.ts";
 import { parseDate } from "./parseDate.ts";
+import { endOfPeriod } from "./period.ts";
+import { printGreen, printRed, printSubmit } from "./print.ts";
+import { store } from "./store.ts";
 import { syncSubmit } from "./syncSubmit.ts";
 
-const DEFAULT_HOURS = 8;
-
-const store = initStore();
+export const DEFAULT_HOURS = 8;
 
 const utCommand = new Command()
   .description("Register undertime.")
@@ -46,21 +45,17 @@ const otCommand = new Command()
 const submitCommand = new Command()
   .description("Print times for this period.")
   .option("-d, --date <date:string>", "Date to find submit period.")
-  .action(async ({ date }) => {
+  .option("-s --sync", "Sync submit to server.")
+  .action(async ({ date, sync }) => {
     const inputDate = parseDate(date) ?? new Date();
 
-    const keys = dateKeysInPeriod(inputDate);
+    const submit = createSubmit(inputDate);
     const endDate = endOfPeriod(inputDate);
 
-    const output = keys.map((key) => ({
-      date: parseDateKey(key),
-      hours: store[key] ?? DEFAULT_HOURS,
-    }));
-
-    const success = await syncSubmit(output, endDate);
+    const success = sync ? await syncSubmit(submit, endDate) : true;
 
     if (success) {
-      printSubmit(output);
+      printSubmit(submit);
     }
   });
 

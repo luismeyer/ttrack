@@ -1,4 +1,5 @@
 import { existsSync } from "https://deno.land/std@0.184.0/fs/mod.ts";
+
 import { relativePath } from "./relativePath.ts";
 
 const FILE_PATH = relativePath("../store/store.json");
@@ -18,7 +19,7 @@ const writeFileSync = (json: Store) => {
   Deno.writeFileSync(FILE_PATH, data);
 };
 
-export const initStore = () => {
+const initStore = () => {
   existsSync;
   if (!existsSync(FILE_PATH)) {
     writeFileSync({});
@@ -53,3 +54,5 @@ export const initStore = () => {
     },
   });
 };
+
+export const store = initStore();

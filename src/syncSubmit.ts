@@ -1,8 +1,8 @@
 import { loadSync } from "https://deno.land/std@0.184.0/dotenv/mod.ts";
 import { colors } from "https://deno.land/x/cliffy@v0.25.7/ansi/colors.ts";
 
-import { SubmitData } from "./types.ts";
 import { relativePath } from "./relativePath.ts";
+import { SubmitData } from "./createSubmit.ts";
 
 const configData = loadSync({ envPath: relativePath("../.env") });
 
