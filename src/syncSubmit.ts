@@ -4,7 +4,7 @@ import { colors } from "https://deno.land/x/cliffy@v0.25.7/ansi/colors.ts";
 import { SubmitData } from "./types.ts";
 import { relativePath } from "./relativePath.ts";
 
-const configData = loadSync({ envPath: relativePath("./.env") });
+const configData = loadSync({ envPath: relativePath("../.env") });
 
 const { TOKEN, PROJECT_NUMBER, ENTERPRISE_ID, SAVE_URL, SUBMIT_URL } =
   configData;

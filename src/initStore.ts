@@ -1,7 +1,7 @@
 import { existsSync } from "https://deno.land/std@0.184.0/fs/mod.ts";
 import { relativePath } from "./relativePath.ts";
 
-const FILE_PATH = relativePath("./store.json");
+const FILE_PATH = relativePath("../store/store.json");
 
 type Store = Record<string, number | undefined>;
 
