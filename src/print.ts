@@ -2,8 +2,8 @@ import { colors } from "https://deno.land/x/cliffy@v0.25.7/ansi/colors.ts";
 import { Cell, Table } from "https://deno.land/x/cliffy@v0.25.7/table/mod.ts";
 
 import { SubmitData } from "./createSubmit.ts";
-import { formatDateForPrint } from "./dateKey.ts";
 import { isWeekend } from "./isWeekend.ts";
+import { formatDate } from "./formatDate.ts";
 
 export const printSubmit = (data: SubmitData) => {
   const table = new Table();
@@ -12,20 +12,25 @@ export const printSubmit = (data: SubmitData) => {
   table.indent(2);
   table.header(["Date", "Hours"]);
 
-  data.forEach(({ date, hours }) => {
-    let value = String(hours);
-    const parsedDate = formatDateForPrint(date);
+  data.forEach(({ date, data }) => {
+    let value = String(data);
+    const parsedDate = formatDate(date);
 
     let key = parsedDate;
 
+    if (data === "sick") {
+      value = colors.green("Sick");
+      key = colors.bgGreen(parsedDate);
+    }
+
     // Overhours
-    if (hours > 8) {
+    if (data !== "sick" && data > 8) {
       value = colors.green(value);
       key = colors.bgGreen(parsedDate);
     }
 
     // Underhours
-    if (hours < 8) {
+    if (data !== "sick" && data < 8) {
       value = colors.red(value);
       key = colors.bgRed(parsedDate);
     }

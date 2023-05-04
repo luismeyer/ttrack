@@ -6,25 +6,23 @@ import { store } from "./store.ts";
 
 export type SubmitData = Array<{
   date: Date;
-  hours: number;
+  data: number | "sick";
 }>;
 
-export const createSubmit = (date: Date) => {
+export const createSubmit = (date: Date): SubmitData => {
   const keys = dateKeysInPeriod(date);
 
-  const output = keys.map((key) => {
-    let hours = store[key] ?? DEFAULT_HOURS;
+  return keys.map((key) => {
+    let data = store[key] ?? DEFAULT_HOURS;
 
     const date = parseDateKey(key);
     if (isWeekend(date)) {
-      hours = 0;
+      data = 0;
     }
 
     return {
       date: parseDateKey(key),
-      hours,
+      data,
     };
   });
-
-  return output;
 };

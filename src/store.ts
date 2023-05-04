@@ -1,32 +1,40 @@
+import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
 import { existsSync } from "https://deno.land/std@0.184.0/fs/mod.ts";
 
-import { relativePath } from "./relativePath.ts";
+const APP_DATA_DIR = os.homeDir() + "/Library/Application Support/ttrack";
 
-const FILE_PATH = relativePath("../store/store.json");
+const FILE_PATH = `${APP_DATA_DIR}/store.json`;
 
-type Store = Record<string, number | undefined>;
+export type Store = Record<string, "sick" | number | undefined>;
 
-const readJson = (): Store => {
-  const fileContent = Deno.readTextFileSync(FILE_PATH);
-
-  return JSON.parse(fileContent);
-};
-
-const writeFileSync = (json: Store) => {
+const writeStore = (json: Store) => {
   const encoder = new TextEncoder();
   const data = encoder.encode(JSON.stringify(json ?? {}));
 
   Deno.writeFileSync(FILE_PATH, data);
 };
 
-const initStore = () => {
-  existsSync;
-  if (!existsSync(FILE_PATH)) {
-    writeFileSync({});
+const readStore = (): Store => {
+  const fileContent = Deno.readTextFileSync(FILE_PATH);
+
+  return JSON.parse(fileContent);
+};
+
+const setupFiles = () => {
+  if (!existsSync(APP_DATA_DIR)) {
+    Deno.mkdirSync(APP_DATA_DIR);
   }
 
+  if (!existsSync(FILE_PATH)) {
+    writeStore({});
+  }
+};
+
+const initStore = () => {
+  setupFiles();
+
   // this holds the json value during runtime
-  const jsonVar = readJson();
+  const jsonVar = readStore();
 
   return new Proxy(jsonVar, {
     get: (target, key, receiver) => Reflect.get(target, key, receiver),
@@ -47,7 +55,7 @@ const initStore = () => {
 
       if (success && oldValue !== input) {
         // persist new value in file
-        writeFileSync(target);
+        writeStore(target);
       }
 
       return success;

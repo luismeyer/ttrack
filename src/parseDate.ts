@@ -27,10 +27,18 @@ const gracefulParse = (date: string, format: string) => {
   }
 };
 
-export const parseDate = (input?: string): Date | undefined => {
+export const parseDateInput = (input?: string): Date => {
   if (!input) {
-    return;
+    return new Date();
   }
 
-  return formats.map((format) => gracefulParse(input, format)).find(Boolean);
+  const date = formats
+    .map((format) => gracefulParse(input, format))
+    .find(Boolean);
+
+  if (!date) {
+    throw new Error(`Could not parse date: ${input}`);
+  }
+
+  return date;
 };

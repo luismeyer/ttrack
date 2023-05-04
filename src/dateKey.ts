@@ -11,11 +11,3 @@ export const parseDateKey = (key: string) => {
 
   return new Date(year, month, day);
 };
-
-export const formatDateForPrint = (date: Date) => {
-  return date.toLocaleDateString("de-DE", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};

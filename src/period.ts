@@ -45,14 +45,3 @@ export const dateKeysInPeriod = (date: Date): string[] => {
     return secondPeriodDates(year, month);
   }
 };
-
-export const endOfPeriod = (date: Date): Date => {
-  const month = date.getMonth();
-  const year = date.getFullYear();
-
-  if (isFirstPeroiod(date)) {
-    return new Date(year, month, 15);
-  } else {
-    return new Date(year, month, endOfMonth(year, month));
-  }
-};

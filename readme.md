@@ -1,6 +1,6 @@
 # Timetrack
 
-A simple time tracking tool for the command line written with Deno.
+Simple time tracking tool for the command line running on Deno.
 
 ## Usage
 
@@ -11,7 +11,8 @@ A simple time tracking tool for the command line written with Deno.
 Aliases:
 
 ```sh
-alias tts="[path to project]/ttrack submit"
+alias ttsubmit="[path to project]/ttrack submit"
+alias ttsick="[path to project]/ttrack sick"
 alias ttot="[path to project]/ttrack ot"
 alias ttut="[path to project]/ttrack ut"
 ```
