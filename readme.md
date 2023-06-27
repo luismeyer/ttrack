@@ -2,17 +2,17 @@
 
 Simple time tracking tool for the command line running on Deno.
 
-## Usage
+## Build
 
 1. Install Deno
-2. Run `deno compile index.ts -A`
-3. Add these aliases to you shell config file
-
-Aliases:
+2. Run `deno task build`
+3. Add this aliases to you shell config file
 
 ```sh
-alias ttsubmit="[path to project]/ttrack submit"
-alias ttsick="[path to project]/ttrack sick"
-alias ttot="[path to project]/ttrack ot"
-alias ttut="[path to project]/ttrack ut"
+alias tt="[path to project]/build/ttrack"
 ```
+
+## Development
+
+1. Install Deno
+2. Run `deno task dev [subcommand you want to test]`

@@ -9,8 +9,8 @@ import { formatDate } from "./formatDate.ts";
 
 export const DEFAULT_HOURS = 8;
 
-const utCommand = new Command()
-  .description("Register undertime.")
+const undertimeCommand = new Command()
+  .description("Register undertime")
   .option("-d, --date <date:string>", "Date to register change.")
   .arguments("<amount:integer>")
   .action(({ date }, amount) => {
@@ -26,8 +26,8 @@ const utCommand = new Command()
     printRed(`${formatDate(parsedDate)} => Time set to ${store[key]} hours.`);
   });
 
-const otCommand = new Command()
-  .description("Register overtime.")
+const overtimeCommand = new Command()
+  .description("Register overtime")
   .option("-d, --date <date:string>", "Date to register change.")
   .arguments("<amount:integer>")
   .action(({ date }, amount) => {
@@ -43,7 +43,7 @@ const otCommand = new Command()
   });
 
 const submitCommand = new Command()
-  .description("Print times for this period.")
+  .description("Print times for this period")
   .option("-d, --date <date:string>", "Date to find submit period.")
   .action(({ date }) => {
     const inputDate = parseDateInput(date);
@@ -54,7 +54,7 @@ const submitCommand = new Command()
   });
 
 const sickCommand = new Command()
-  .description("Set sick for the day.")
+  .description("Set sick for the day")
   .option("-d, --date <date:string>", "Date to update.")
   .action(({ date }) => {
     const parsedDate = parseDateInput(date);
@@ -65,8 +65,8 @@ const sickCommand = new Command()
   });
 
 await new Command()
-  .command("ut", utCommand)
-  .command("ot", otCommand)
-  .command("submit", submitCommand)
-  .command("sick", sickCommand)
+  .command("u", undertimeCommand)
+  .command("o", overtimeCommand)
+  .command("s", sickCommand)
+  .command("sub", submitCommand)
   .parse(Deno.args);
