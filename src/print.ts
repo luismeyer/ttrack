@@ -5,6 +5,15 @@ import { SubmitData } from "./createSubmit.ts";
 import { isWeekend } from "./isWeekend.ts";
 import { formatDate } from "./formatDate.ts";
 
+const createCellFunction = (table: Table) => (key: string, value: string) => {
+  const dateCell = Cell.from(key);
+
+  const hoursCell = Cell.from(value);
+  hoursCell.align("right");
+
+  table.push([dateCell, hoursCell]);
+};
+
 export const printSubmit = (data: SubmitData) => {
   const table = new Table();
   table.border(true);
@@ -12,40 +21,40 @@ export const printSubmit = (data: SubmitData) => {
   table.indent(2);
   table.header(["Date", "Hours"]);
 
+  const createCell = createCellFunction(table);
+
   data.forEach(({ date, data }) => {
-    let value = String(data);
+    const value = String(data);
     const parsedDate = formatDate(date);
 
-    let key = parsedDate;
+    if (isWeekend(date)) {
+      createCell(parsedDate, "Weekend");
+      return;
+    }
 
     if (data === "sick") {
-      value = colors.green("Sick");
-      key = colors.bgGreen(parsedDate);
+      createCell(colors.bgGreen(parsedDate), colors.green("Sick"));
+      return;
+    }
+
+    if (data === "halfsick") {
+      createCell(colors.bgGreen(parsedDate), colors.green("1/2 Sick"));
+      return;
     }
 
     // Overhours
-    if (data !== "sick" && data > 8) {
-      value = colors.green(value);
-      key = colors.bgGreen(parsedDate);
+    if (data > 8) {
+      createCell(colors.bgGreen(parsedDate), colors.green(value));
+      return;
     }
 
     // Underhours
-    if (data !== "sick" && data < 8) {
-      value = colors.red(value);
-      key = colors.bgRed(parsedDate);
+    if (data < 8) {
+      createCell(colors.bgRed(parsedDate), colors.red(value));
+      return;
     }
 
-    if (isWeekend(date)) {
-      value = "Weekend";
-      key = parsedDate;
-    }
-
-    const dateCell = Cell.from(key);
-
-    const hoursCell = Cell.from(value);
-    hoursCell.align("right");
-
-    table.push([dateCell, hoursCell]);
+    createCell(parsedDate, value);
   });
 
   table.render();

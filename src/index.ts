@@ -56,12 +56,15 @@ const submitCommand = new Command()
 const sickCommand = new Command()
   .description("Set sick for the day")
   .option("-d, --date <date:string>", "Date to update.")
-  .action(({ date }) => {
+  .option("-a, --halfday", "If only half of the day should be set to sick.")
+  .action(({ date, halfday }) => {
     const parsedDate = parseDateInput(date);
     const key = createDateKey(parsedDate);
 
-    store[key] = "sick";
-    printGreen(`${formatDate(parsedDate)} => Set status to sick.`);
+    const state = halfday ? "halfsick" : "sick";
+    store[key] = state;
+
+    printGreen(`${formatDate(parsedDate)} => Set status to ${state}.`);
   });
 
 await new Command()

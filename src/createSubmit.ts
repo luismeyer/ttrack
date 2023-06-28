@@ -2,11 +2,11 @@ import { parseDateKey } from "./dateKey.ts";
 import { DEFAULT_HOURS } from "./index.ts";
 import { isWeekend } from "./isWeekend.ts";
 import { dateKeysInPeriod } from "./period.ts";
-import { store } from "./store.ts";
+import { Day, store } from "./store.ts";
 
 export type SubmitData = Array<{
   date: Date;
-  data: number | "sick";
+  data: Day;
 }>;
 
 export const createSubmit = (date: Date): SubmitData => {

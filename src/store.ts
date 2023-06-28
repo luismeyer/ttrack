@@ -5,7 +5,9 @@ const APP_DATA_DIR = os.homeDir() + "/Library/Application Support/ttrack";
 
 const FILE_PATH = `${APP_DATA_DIR}/store.json`;
 
-export type Store = Record<string, "sick" | number | undefined>;
+export type Day = "sick" | "halfsick" | number;
+
+export type Store = Record<string, Day | undefined>;
 
 const writeStore = (json: Store) => {
   const encoder = new TextEncoder();
